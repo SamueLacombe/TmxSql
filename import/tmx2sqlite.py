@@ -90,7 +90,7 @@ def insertTUs(db_con, nodes, count, totalcount):
             root.clear()
     # except ParseError:
     except Exception as e:
-        print e
+        print (e)
         db_con.commit()
     del nodes
 
@@ -106,8 +106,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     start = str(datetime.datetime.now())
-    print >> sys.stderr, '\nPython TmRepository: Tmx2Sqlite Import'
-    print >> sys.stderr, '   Import Started:\t' + start
+    print('\nPython TmRepository: Tmx2Sqlite Import', file=sys.stderr)
+    print('   Import Started:\t' + start, file=sys.stderr)
     #sys.exit()
 
     totalcount = 0
@@ -139,8 +139,8 @@ if __name__ == '__main__':
 
         count = 0
 
-        print >> sys.stderr, '\n\tImporting TMX File into SQLite3: ' + tmx_file
-        print >> sys.stderr, '\tStarted:\t' + str(datetime.datetime.now())
+        print('\n\tImporting TMX File into SQLite3: ' + tmx_file, file=sys.stderr)
+        print('\tStarted:\t' + str(datetime.datetime.now()), file=sys.stderr)
 
         # use iterparse to process large tmx files, instead of in-memory.
         nodes = iter(iterparse(tmx_file, ['start', 'end']))
@@ -161,15 +161,15 @@ if __name__ == '__main__':
         count, totalcount = insertTUs(con, nodes, count, totalcount)
 
         completed = str(datetime.datetime.now())
-        print >> sys.stderr, '\tCompleted:\t' + completed
+        print('\tCompleted:\t' + completed, file=sys.stderr)
         cur.execute("UPDATE TmxImportFiles SET targetlang = ?, completed = ? WHERE id = ?", (tgtlang, completed, import_id))
 
-        print >> sys.stderr, '\t' + str(count) + ' records inserted'
+        print('\t' + str(count) + ' records inserted', file=sys.stderr)
 
     con.commit()
     con.close()
 
-    print >> sys.stderr, '\nPython TmRepository: Tmx2Sqlite Import Completed!'
-    print >> sys.stderr, '   Import Started:   ' + start
-    print >> sys.stderr, '   Import Completed: ' + str(datetime.datetime.now())
-    print >> sys.stderr, '   Total Records Inserted:\t' + str(totalcount)
+    print('\nPython TmRepository: Tmx2Sqlite Import Completed!', file=sys.stderr)
+    print('   Import Started:   ' + start, file=sys.stderr)
+    print('   Import Completed: ' + str(datetime.datetime.now()), file=sys.stderr)
+    print('   Total Records Inserted:\t' + str(totalcount), file=sys.stderr)
